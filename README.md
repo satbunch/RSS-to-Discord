@@ -7,7 +7,7 @@ GitHub Actionsが15分おきに各フィードをチェックし、新着があ�
 
 1. Discordで通知したいチャンネルの「チャンネルの編集 > 連携サービス > ウェブフック」から
    Webhookを作成し、URLをコピーする。
-2. このディレクトリの内容でGitHubリポジトリを作成する（Privateでよい）。
+2. このディレクトリの内容でGitHubリポジトリを作成する。**Publicにするのがおすすめ**（理由は下記）。
    ```
    cd rss-to-discord
    git init
@@ -16,6 +16,13 @@ GitHub Actionsが15分おきに各フィードをチェックし、新着があ�
    git remote add origin <あなたのリポジトリURL>
    git push -u origin main
    ```
+
+   > **PublicかPrivateか**
+   > GitHub Actionsの無料枠は、Publicリポジトリなら実行時間**無制限・完全無料**。
+   > Privateだと月2,000分までで、15分おき実行(月あたり約2,880分相当)だと
+   > 超過して課金される可能性がある。
+   > リポジトリに含めるのはRSSのURLとスクリプトだけで、Webhook URLは
+   > Secretsに入れて公開しないので、Publicにしても安全。
 3. GitHubリポジトリの Settings > Secrets and variables > Actions で
    `DISCORD_WEBHOOK_URL` という名前のSecretを作成し、1でコピーしたURLを設定する。
 4. Settings > Actions > General > Workflow permissions を
