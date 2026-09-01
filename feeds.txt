@@ -1,0 +1,8 @@
+# RSS通知したいフィードを1行に1つずつ書く。# で始まる行はコメント。
+https://ryoppippi.com/feed.xml
+https://blog.inkdrop.info/feed
+https://levtech.jp/media/feed
+https://blog.kyu08.com/index.xml
+https://mitchellh.com/feed.xml
+https://nyosegawa.github.io/feed.xml
+http://wineroses.hatenablog.com/feed
