@@ -51,7 +51,6 @@ def post_to_discord(feed_title, entry):
 def main():
     feeds = load_feeds()
     state = load_state()
-    changed = False
 
     for url in feeds:
         parsed = feedparser.parse(url)
@@ -64,7 +63,7 @@ def main():
         if url not in state:
             # 初回は今ある記事を「既読」扱いにするだけで通知はしない（過去記事が一斉に流れるのを防ぐ）
             state[url] = [entry_id(e) for e in parsed.entries if entry_id(e)]
-            changed = True
+            save_state(state)
             print(f"[init] seeded {feed_title} with {len(state[url])} entries")
             continue
 
@@ -74,14 +73,17 @@ def main():
         new_entries = list(reversed(new_entries))[:MAX_ENTRIES_PER_RUN]
 
         for entry in new_entries:
-            post_to_discord(feed_title, entry)
+            try:
+                post_to_discord(feed_title, entry)
+            except requests.RequestException as e:
+                # ここで打ち切ることで、成功済みの分だけ既読状態を確定させる
+                print(f"[error] failed to post {feed_title}: {entry.get('title')}: {e}", file=sys.stderr)
+                break
             seen.add(entry_id(entry))
-            changed = True
             print(f"[post] {feed_title}: {entry.get('title')}")
 
         state[url] = list(seen)
-
-    if changed:
+        # フィードごとに保存し、後続フィードで失敗しても既読状態を失わないようにする
         save_state(state)
 
 
