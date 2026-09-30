@@ -6,3 +6,4 @@ https://blog.kyu08.com/index.xml
 https://mitchellh.com/feed.xml
 https://nyosegawa.github.io/feed.xml
 http://wineroses.hatenablog.com/feed
+https://klemiwary.com/rss.xml
